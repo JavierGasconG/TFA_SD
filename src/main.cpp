@@ -69,6 +69,7 @@ void loop() {
   // publish a message roughly every second.
   if (millis() - lastMillis > 1000) {
     lastMillis = millis();
+    Serial.println("hello");
     client.publish("/hello", "world",true,1);
   }
 }
