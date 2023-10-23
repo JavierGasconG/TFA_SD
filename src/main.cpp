@@ -10,9 +10,12 @@
 #include <WiFi.h>
 #include <MQTT.h>
 #include <Arduino.h>
+#include <Amper.h>
+#include <rele.h>
+#include <SPI.h>
 const char ssid[] = "Esp32";
 const char pass[] = "prueba123";
-
+SPISettings settings(1000000, MSBFIRST, SPI_MODE0);
 WiFiClient net;
 MQTTClient client;
 
@@ -48,28 +51,40 @@ void messageReceived(String &topic, String &payload) {
 
 void setup() {
   Serial.begin(9600);
-  WiFi.begin(ssid, pass);
-
+  //WiFi.begin(ssid, pass);
+  ini_amper();
+  ini_rele();
   // Note: Local domain names (e.g. "Computer.local" on OSX) are not supported
   // by Arduino. You need to set the IP address directly.
-  client.begin("44.204.177.245",1883, net);
-  client.onMessage(messageReceived);
-  client.setWill("/hello","Me he hecho pupa", true,2);
-  connect();
+  //client.begin("44.204.177.245",1883, net);
+  //client.onMessage(messageReceived);
+  //client.setWill("/hello","Me he hecho pupa", true,2);
+  //connect();
 }
 
 void loop() {
-  client.loop();
-  delay(10);  // <- fixes some issues with WiFi stability
+  close_rele();
+  //client.loop();
+  //delay(10);  // <- fixes some issues with WiFi stability
 
-  if (!client.connected()) {
-    connect();
-  }
+  //if (!client.connected()) {
+    //connect();
+  //}
 
   // publish a message roughly every second.
-  if (millis() - lastMillis > 1000) {
-    lastMillis = millis();
-    Serial.println("hello");
-    client.publish("/hello", "world",true,1);
-  }
+  //if (millis() - lastMillis > 1000) {
+  //  lastMillis = millis();
+  //  Serial.println("hello");
+  //  client.publish("/hello", "world",true,1);
+  //}
+  double value_amp=0.0;
+  delay(5000);
+  value_amp=get_mA(settings);
+  Serial.println(value_amp);
+  open_rele();
+  value_amp=0.0;
+  delay(5000);
+  value_amp=get_mA(settings);
+  Serial.println(value_amp);
+
 }
