@@ -38,17 +38,22 @@ void connect() {
 }
 
 void messageReceived(String &topic, String &payload) {
-  if(payload== "false"){
-    open_rele();
-    Serial.println("Desconectando frigo");
-  }else if (payload=="true")
+  if(topic=="lampara/color"){
+    Serial.println("Cambiando color a"+payload);
+  }else if (topic=="lampara/encendido"){
+    if(payload== "false"){
+      open_rele();
+      Serial.println("Desconectando frigo");
+    }else if (payload=="true")
+    {
+      close_rele();
+      Serial.println("Conectando firgo");
+    }
+  }else if (topic=="lampara/intensidad")
   {
-    close_rele();
-    Serial.println("Conectando frigo");
+    Serial.println("Cambiando intensidad a"+payload);
   }
   
-  Serial.println(topic);
-
 }
 double amper=100.0;
 
@@ -60,11 +65,14 @@ void setup() {
   ini_rele();
 
   client.begin("44.204.177.245",1883, net);
-  client.setWill("frigo/latawill","false", true,2);
+  client.setWill("lampara/latawill","false", true,2);
 
   connect();
-  client.subscribe("frigo/encendido", 1);
-  client.publish("frigo/latawill", "true",true,1);
+  client.subscribe("lampara/color", 1);
+  client.subscribe("lampara/intensidad", 1);
+
+  client.subscribe("lampara/encendido", 1);
+  client.publish("lampara/latawill", "true",true,1);
   client.onMessage(messageReceived);
 
 }
@@ -79,12 +87,12 @@ void loop() {
   }
   client.onMessage(messageReceived);
   //amper=get_mA(settings);
-  //client.publish("frigo/corriente", String(amper),true,1);
+  //client.publish("lampara/consumo", String(amper),true,1);
 
   if (millis() - lastMillis > 1000) {
     lastMillis = millis();
     Serial.println("hello");
-    client.publish("frigo/corriente", String(amper),true,1);
+    client.publish("lampara/consumo", String(amper),true,1);
   }
   delay(5000);
 

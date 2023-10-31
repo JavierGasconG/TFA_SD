@@ -60,11 +60,11 @@ void setup() {
   ini_rele();
 
   client.begin("44.204.177.245",1883, net);
-  client.setWill("frigo/latawill","false", true,2);
+  client.setWill("frigo/latswill","false", true,2);
 
   connect();
   client.subscribe("frigo/encendido", 1);
-  client.publish("frigo/latawill", "true",true,1);
+  client.publish("frigo/latswill", "true",true,1);
   client.onMessage(messageReceived);
 
 }
