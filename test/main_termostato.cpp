@@ -31,15 +31,15 @@ void connect() {
 
 void messageReceived(String &topic, String &payload) {
   if(topic=="calentador/limite"){
-    Serial.println("Cambiando temperatuara limite a"+payload);
-  }else if (topic=="calentador/limite"){
+    Serial.println("Cambiando temperatuara limite a "+payload);
+  }else if (topic=="calentador/encendido"){
     if(payload== "false"){
       open_rele();
-      Serial.println("Desconectando frigo");
+      Serial.println("Desconectando calentador");
     }else if (payload=="true")
     {
       close_rele();
-      Serial.println("Conectando firgo");
+      Serial.println("Conectando calentador");
     }
   }
 }

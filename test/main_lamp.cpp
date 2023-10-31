@@ -32,21 +32,32 @@ void connect() {
 
 void messageReceived(String &topic, String &payload) {
   if(topic=="lampara/color"){
-    Serial.println("Cambiando color a"+payload);
+    if(payload=="0"){
+      Serial.println("Cambiando color Rojo");
+
+    }
+    if(payload=="1"){
+      Serial.println("Cambiando color Verde");
+
+    }
+    if(payload=="2"){
+      Serial.println("Cambiando color azul");
+
+    }
   }else if (topic=="lampara/encendido"){
     if(payload== "false"){
       open_rele();
-      Serial.println("Desconectando frigo");
+      Serial.println("Desconectando lampara");
     }else if (payload=="true")
     {
       close_rele();
-      Serial.println("Conectando firgo");
+      Serial.println("Conectando lampara");
     }
   }else if (topic=="lampara/intensidad")
   {
-    Serial.println("Cambiando intensidad a"+payload);
+    Serial.println("Cambiando intensidad a "+payload);
   }
-  
+  Serial.println(topic+payload);
 }
 double amper=100.0;
 
@@ -91,7 +102,7 @@ void loop() {
 
   amper--;
   Serial.println(amper); 
-  if (amper==0 ) {
+  if (amper==0.00 ) {
     amper==1100;
   }
 
