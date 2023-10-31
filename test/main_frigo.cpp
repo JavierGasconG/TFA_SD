@@ -1,11 +1,3 @@
-// This example uses an ESP32 Development Board
-// to connect to shiftr.io.
-//
-// You can check on your device after a successful
-// connection here: https://www.shiftr.io/try.
-//
-// by Joël Gähwiler
-// https://github.com/256dpi/arduino-mqtt
 
 #include <WiFi.h>
 #include <MQTT.h>
@@ -60,11 +52,11 @@ void setup() {
   ini_rele();
 
   client.begin("44.204.177.245",1883, net);
-  client.setWill("frigo/latswill","false", true,2);
+  client.setWill("frigo/lastwill","desconectado", true,2);
 
   connect();
   client.subscribe("frigo/encendido", 1);
-  client.publish("frigo/latswill", "true",true,1);
+  client.publish("frigo/lastwill", "conectado",true,2);
   client.onMessage(messageReceived);
 
 }
