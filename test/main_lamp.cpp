@@ -90,21 +90,21 @@ void loop() {
     connect();
   }
   client.onMessage(messageReceived);
-  //amper=get_mA(settings);
-  //client.publish("lampara/consumo", String(amper),true,1);
-
+  amper=get_mA(settings);
+  client.publish("lampara/consumo", String(amper),true,1);
+/*
   if (millis() - lastMillis > 1000) {
     lastMillis = millis();
     Serial.println("hello");
-    client.publish("lampara/consumo", String(amper),true,1);
+    client.publish("frigo/corriente", String(amper),true,1);
   }
-  delay(5000);
 
   amper--;
   Serial.println(amper); 
-  if (amper==0.00 ) {
+  if (amper==0 ) {
     amper==1100;
   }
-
+*/
+  delay(5000);
 
 }
